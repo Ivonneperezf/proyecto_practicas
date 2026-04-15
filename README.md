@@ -55,3 +55,8 @@ Además de agregar el display necesario para los marcadores interactivos.
 Para realizar la ejecución de la simulación debe tener las siguientes dependencias instaladas, en un entorno (con entornos de python es suficiente, aunque si se cree necesario se puede crear un entorno usando conda):
 
 * numpy: versión 1.23.5
+* opencv-python: versión 4.13.0.92
+* ros_numpy: versión 0.0.5
+* ultralytics: versión 8.4.23
+* open3d: versión 0.19.0
+
