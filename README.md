@@ -39,3 +39,13 @@ Adicional a esto se debe de realizar la instalación de las dependencias necesar
   rosdep install -y --from-paths . --ignore-src --rosdistro noetic
 ```
 Las dependencias faltantes de versiones anteriores deben de instalarse munualmente.
+
+Si al iniciar el rviz con moveit no se encuentra el interactor de movimiento, ejecutar el siguiente comando.
+
+```bash
+  sudo apt install ros-noetic-trac-ik-kinematics-plugin
+```
+
+Además de agregar el display necesario para los marcadores interactivos.
+
+![Display Interactive Marker](images/display_interactive_marker.jpeg)
