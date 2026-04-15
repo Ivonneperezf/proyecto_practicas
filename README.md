@@ -8,4 +8,10 @@ Para navegar fácilmente en el repositorio es conveniente, después de hacer sou
 
 ```bash
   roscd m1n6s300_moveit_config/launch
-  ```
+```
+
+En el archivo ***m1n6s300_gazebo_demo.launch*** debemos agregar algunas líneas de código, ya que los controladores cargados para la simulación son los controladore usados por el brazo físico, a diferencia de los controladores necesarios para gazebo
+
+```XML
+  roscd m1n6s300_moveit_config/launch
+```
