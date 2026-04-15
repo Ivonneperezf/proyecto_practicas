@@ -21,13 +21,14 @@ En el archivo ***m1n6s300_gazebo_demo.launch*** debemos agregar algunas líneas 
 El bloque siguiente debe agregarse el argumento anterior
 
 ```XML
+<!-- Se agrega la parte de gazebo_sim -->
 <include file="$(find m1n6s300_moveit_config)/launch/move_group_m1n6s300.launch">
-    <arg name="allow_trajectory_execution" value="true"/>
-    <arg name="fake_execution" value="false"/>
-    <arg name="info" value="true"/>
-    <arg name="debug" value="$(arg debug)"/>
-    <arg name="joint_states_ns" value="/m1n6s300/joint_states"/>
-    <arg name="controller_manager" value="m1n6s300_ros_control"/>
-    <arg name="gazebo_sim" value="$(arg gazebo_sim)"/>
-  </include> 
+  <arg name="allow_trajectory_execution" value="true"/>
+  <arg name="fake_execution" value="false"/>
+  <arg name="info" value="true"/>
+  <arg name="debug" value="$(arg debug)"/>
+  <arg name="joint_states_ns" value="/m1n6s300/joint_states"/>
+  <arg name="controller_manager" value="m1n6s300_ros_control"/>
+  <arg name="gazebo_sim" value="$(arg gazebo_sim)"/>
+</include> 
 ```
