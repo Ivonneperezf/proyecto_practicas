@@ -60,3 +60,27 @@ Para realizar la ejecución de la simulación debe tener las siguientes dependen
 * ultralytics: versión 8.4.23
 * open3d: versión 0.19.0
 
+Para lanzar los nodos realizar la ejecución de con los siguientes comandos:
+
+Para lanzar el nodo con Gazebo
+
+```bash
+  roslaunch sim_kinova gazebo_kinova_sim.launch
+```
+
+a este comando se le puede agregar el argumento world para indicar que mundos cargar, por el momento los mundos disponibles son los siguientes:
+
+```bash
+world_table_aruco
+world_table_bowl_with_apple
+world_table_bowl
+world_table_chessboard
+```
+
+puede usarse el comando el siguiente comando para lanzar cualquiera de los mundos, 
+
+```bash
+  roslaunch sim_kinova gazebo_kinova_sim.launch world:=world_table_bowl_with_apple
+```
+
+el mundo cargado por defecto es ***world_table_bowl_with_apple***.
