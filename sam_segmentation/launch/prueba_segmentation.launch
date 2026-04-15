@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="sam_segmentation"
+          type="segmentation_bowl.py"
+          name="vision_d415"
+          output="screen"/>
+</launch>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Nodo 1: Detecta objeto y publica /object_centroid -->
+    <node name="vision_simulation"
+          pkg="sam_segmentation"
+          type="segmentation_bowl_gazebo.py"
+          output="screen"/>
+
+    <!-- Nodo 2: Transforma /object_centroid a coordenadas de la base -->
+    <node name="kinova_transformer"
+          pkg="sam_segmentation"
+          type="transformer_node_gazebo.py"
+          output="screen"/>
+
+
+</launch>

@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="sam_segmentation"
+          type="segmentation_threaded.py"
+          name="vision_d415"
+          output="screen">
+    </node>
+</launch>

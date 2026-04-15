@@ -1,0 +1,11 @@
+<launch>
+    <rosparam command="load" file="$(find calibration)/config/handeye_calibration.yaml"/>
+
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="align_depth" value="true"/>
+    </include>
+
+    <node name="vision_d415" pkg="sam_segmentation" type="segmentation_bowl.py" output="screen" />
+
+    <node name="kinova_transformer" pkg="sam_segmentation" type="transformer_node.py" output="screen" />
+</launch>

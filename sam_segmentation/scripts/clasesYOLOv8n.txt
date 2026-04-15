@@ -1,0 +1,80 @@
+ID 0: person
+ID 1: bicycle
+ID 2: car
+ID 3: motorcycle
+ID 4: airplane
+ID 5: bus
+ID 6: train
+ID 7: truck
+ID 8: boat
+ID 9: traffic light
+ID 10: fire hydrant
+ID 11: stop sign
+ID 12: parking meter
+ID 13: bench
+ID 14: bird
+ID 15: cat
+ID 16: dog
+ID 17: horse
+ID 18: sheep
+ID 19: cow
+ID 20: elephant
+ID 21: bear
+ID 22: zebra
+ID 23: giraffe
+ID 24: backpack
+ID 25: umbrella
+ID 26: handbag
+ID 27: tie
+ID 28: suitcase
+ID 29: frisbee
+ID 30: skis
+ID 31: snowboard
+ID 32: sports ball
+ID 33: kite
+ID 34: baseball bat
+ID 35: baseball glove
+ID 36: skateboard
+ID 37: surfboard
+ID 38: tennis racket
+ID 39: bottle
+ID 40: wine glass
+ID 41: cup
+ID 42: fork
+ID 43: knife
+ID 44: spoon
+ID 45: bowl
+ID 46: banana
+ID 47: apple
+ID 48: sandwich
+ID 49: orange
+ID 50: broccoli
+ID 51: carrot
+ID 52: hot dog
+ID 53: pizza
+ID 54: donut
+ID 55: cake
+ID 56: chair
+ID 57: couch
+ID 58: potted plant
+ID 59: bed
+ID 60: dining table
+ID 61: toilet
+ID 62: tv
+ID 63: laptop
+ID 64: mouse
+ID 65: remote
+ID 66: keyboard
+ID 67: cell phone
+ID 68: microwave
+ID 69: oven
+ID 70: toaster
+ID 71: sink
+ID 72: refrigerator
+ID 73: book
+ID 74: clock
+ID 75: vase
+ID 76: scissors
+ID 77: teddy bear
+ID 78: hair drier
+ID 79: toothbrush

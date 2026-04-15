@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- MoveIt: necesita saber el estado de las juntas del brazo -->
+    <node pkg="moveit_ros_move_group"
+          type="move_group"
+          name="move_group">
+        <remap from="/joint_states" to="/m1n6s300/joint_states"/>
+    </node>
+
+    <!-- Nodo 3: Recibe /object_centroid_robot y mueve el brazo -->
+    <node name="kinova_mover"
+          pkg="sam_segmentation"
+          type="mover_brazo.py"
+          output="screen">
+        <remap from="/joint_states" to="/m1n6s300/joint_states"/>
+    </node>
+
+</launch>

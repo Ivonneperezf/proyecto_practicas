@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="sam_segmentation"
+          type="segmentation_sam3.py"
+          name="sam3_bowl_node"
+          output="screen"/>
+</launch>
