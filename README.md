@@ -10,8 +10,24 @@ Para navegar fácilmente en el repositorio es conveniente, después de hacer sou
   roscd m1n6s300_moveit_config/launch
 ```
 
-En el archivo ***m1n6s300_gazebo_demo.launch*** debemos agregar algunas líneas de código, ya que los controladores cargados para la simulación son los controladore usados por el brazo físico, a diferencia de los controladores necesarios para gazebo
+En el archivo ***m1n6s300_gazebo_demo.launch*** debemos agregar algunas líneas de código, ya que los controladores cargados para la simulación son los controladore usados por el brazo físico, a diferencia de los controladores necesarios para gazebo.
+
 
 ```XML
-  roscd m1n6s300_moveit_config/launch
+  <!-- En los argumentos agregar -->
+  <arg name="gazebo_sim" default="true"/>
+```
+
+El bloque siguiente debe agregarse el argumento anterior
+
+```XML
+<include file="$(find m1n6s300_moveit_config)/launch/move_group_m1n6s300.launch">
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="false"/>
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="joint_states_ns" value="/m1n6s300/joint_states"/>
+    <arg name="controller_manager" value="m1n6s300_ros_control"/>
+    <arg name="gazebo_sim" value="$(arg gazebo_sim)"/>
+  </include> 
 ```
