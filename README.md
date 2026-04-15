@@ -32,3 +32,10 @@ El bloque siguiente debe agregarse el argumento anterior
   <arg name="gazebo_sim" value="$(arg gazebo_sim)"/>
 </include> 
 ```
+
+Adicional a esto se debe de realizar la instalación de las dependencias necesarias para la construcción de los paquetes
+
+```bash
+  rosdep install -y --from-paths . --ignore-src --rosdistro noetic
+```
+Las dependencias faltantes de versiones anteriores deben de instalarse munualmente.
