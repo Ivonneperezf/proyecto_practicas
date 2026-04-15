@@ -50,7 +50,7 @@ Además de agregar el display necesario para los marcadores interactivos.
 
 ![Display Interactive Marker](images/display_interactive_marker.jpeg)
 
-# Ejecución de rutina actual de movimiento
+### Ejecución de rutina actual de movimiento
 
 Para realizar la ejecución de la simulación debe tener las siguientes dependencias instaladas, en un entorno (con entornos de python es suficiente, aunque si se cree necesario se puede crear un entorno usando conda):
 
