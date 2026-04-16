@@ -52,7 +52,34 @@ Además de agregar el display necesario para los marcadores interactivos.
 
 Otra configuración indispensable es agregar las configuraciones necesarias a los archivos xacro para poder spawnear de forma correcta las visualizaciones y configuraciones del brazo.
 
-Refiriendonos primero al archivo [m1n6s300_standalone.xacro](https://github.com/Kinovarobotics/kinova-ros/blob/noetic-devel/kinova_description/urdf/m1n6s300_standalone.xacro) correspondiente al paquete [robot_description](https://github.com/Kinovarobotics/kinova-ros/blob/noetic-devel/kinova_description), es necesario agregar algunas configuraciones sobre la montura de la camara, disponible en la rama [ros1-legacy](https://github.com/realsenseai/realsense-ros/tree/ros1-legacy) del repositorio correspondiente de intel realsense d415 para ros1.
+Refiriendonos primero al archivo [m1n6s300_standalone.xacro](https://github.com/Kinovarobotics/kinova-ros/blob/noetic-devel/kinova_description/urdf/m1n6s300_standalone.xacro) correspondiente al paquete [robot_description](https://github.com/Kinovarobotics/kinova-ros/blob/noetic-devel/kinova_description), es necesario agregar algunas configuraciones sobre la montura de la camara,  la cual se encuentra disponible en la rama [ros1-legacy](https://github.com/realsenseai/realsense-ros/tree/ros1-legacy) del repositorio correspondiente de intel realsense d415 para ros1. Este repositorio debe de ser clonado y compilado en el workspace del proyecto como paquete independiente, así como se deben instalar los drivers necesarios.
+
+* El primer cambio es en el archivo [m1n6s300_standalone.xacro](https://github.com/Kinovarobotics/kinova-ros/blob/noetic-devel/kinova_description/urdf/m1n6s300_standalone.xacro), se debe   incluir el archivo [urdf](https://github.com/realsenseai/realsense-ros/blob/ros1-legacy/realsense2_description/urdf/_d415.urdf.xacro) de la cámara para agregar la montura visual en el brazo. La línea debe anexarse de la siguiente manera:
+
+```XML
+<?xml version="1.0"?>
+<!-- m1n6_2 refers to mico v1 6DOF non-spherical 2fingers -->
+
+
+<robot xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:gazebo="http://playerstage.sourceforge.net/gazebo/xmlschema/#gz"
+    xmlns:model="http://playerstage.sourceforge.net/gazebo/xmlschema/#model"
+	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+	xmlns:body="http://playerstage.sourceforge.net/gazebo/xmlschema/#body"
+    xmlns:geom="http://playerstage.sourceforge.net/gazebo/xmlschema/#geom"
+    xmlns:joint="http://playerstage.sourceforge.net/gazebo/xmlschema/#joint"
+	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	xmlns:rendering="http://playerstage.sourceforge.net/gazebo/xmlschema/#rendering"
+    xmlns:renderable="http://playerstage.sourceforge.net/gazebo/xmlschema/#renderable"
+    xmlns:physics="http://playerstage.sourceforge.net/gazebo/xmlschema/#physics"
+	xmlns:xacro="http://www.ros.org/wiki/xacro" name="m1n6s300">
+
+
+  <xacro:include filename="$(find kinova_description)/urdf/m1n6s300.xacro"/>
+  <!-- justo debajo de la inclusión del archivo xacro del brazo -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro"/>
+```
 
 ### Ejecución de rutina actual de movimiento
 
