@@ -195,6 +195,22 @@ Debajo de eso, colocar los plugins necesarios para visualizar los tópicos rgb y
   </sensor>
 </gazebo>
 ```
+Como cambio final, que **puede ser provisional**, es la limitación de las articulaciones 2 y 3 del brazo, esto para que Moveit no realice cambios bruscos.
+#### **Cambio 1**
+```XML
+<!-- <xacro:property name="joint_2_lower_limit" value="${50/180*J_PI}" />
+<xacro:property name="joint_2_upper_limit" value="${310/180*J_PI}" /> -->
+<xacro:property name="joint_2_lower_limit" value="${151/180*J_PI}" />
+<xacro:property name="joint_2_upper_limit" value="${299/180*J_PI}" />
+```
+
+#### **Cambio 2**
+```XML
+<!-- <xacro:property name="joint_3_lower_limit" value="${35/180*J_PI}" />
+<xacro:property name="joint_3_upper_limit" value="${325/180*J_PI}" /> -->
+<xacro:property name="joint_3_lower_limit" value="${52/180*J_PI}" />
+<xacro:property name="joint_3_upper_limit" value="${196/180*J_PI}" />
+```
 
 ### Ejecución de rutina actual de movimiento
 
