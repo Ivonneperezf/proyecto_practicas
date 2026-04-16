@@ -81,6 +81,45 @@ Refiriendonos primero al archivo [m1n6s300_standalone.xacro](https://github.com/
   <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro"/>
 ```
 
+Además se debe agregar las líneas para controlar el movimiento desde gazebo, así como se muestra a continuación:
+
+```XML
+  <xacro:property name="robot_root" value="root" />
+
+  <xacro:m1n6s300  base_parent="${robot_root}"/>
+  <!--Debe ir dentro de la etiqueta robot debajo de la definición de root-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </gazebo>
+  <!--Aquí se termina el bloque que se debe ded agregar-->
+</robot>
+
+```
+
+* El segundo cambio es en el archivo [m1n6s300.xacro](https://github.com/Kinovarobotics/kinova-ros/blob/noetic-devel/kinova_description/urdf/m1n6s300.xacro), al cual se le deben agregar tanto las monturas de la camara, como los también la integración de los tópicos que nos permitirán interactuar con los elementos necesarios.
+Primero, agregamos la montura justo por debajo de la defición de links y joints, anexando esta sección de código:
+
+```XML
+<!-- Montura de la camara en la quinta articulación del brazo -->
+<link name="${prefix}_d415_mount_link"/>
+
+<joint name="${prefix}_d415_mount_joint" type="fixed">
+  <parent link="${prefix}_link_5"/>
+  <child link="${prefix}_d415_mount_link"/>
+  <origin xyz="0.000 -0.129 0.004" rpy="3.142 0.524 -1.571"/>
+</joint>
+
+<xacro:sensor_d415
+  parent="${prefix}_d415_mount_link"
+  name="d415"
+  use_nominal_extrinsics="true">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+</xacro:sensor_d415>
+
+```
+
 ### Ejecución de rutina actual de movimiento
 
 Para realizar la ejecución de la simulación debe tener las siguientes dependencias instaladas, en un entorno (con entornos de python es suficiente, aunque si se cree necesario se puede crear un entorno usando conda):
