@@ -120,6 +120,82 @@ Primero, agregamos la montura justo por debajo de la defición de links y joints
 
 ```
 
+Debajo de eso, colocar los plugins necesarios para visualizar los tópicos rgb y de profundidad de la cámara.
+
+```XML
+<!-- Definición de tópicos-->
+
+<!-- Color camera -->
+<gazebo reference="d415_color_frame">
+  <sensor type="camera" name="d415_color">
+  <update_rate>30.0</update_rate>
+  <camera name="d415_color">
+      <horizontal_fov>1.2043</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+        <clip>
+          <near>0.1</near>
+          <far>10.0</far>
+        </clip>
+  </camera>
+  <plugin name="d415_color_controller" filename="libgazebo_ros_camera.so">
+    <alwaysOn>true</alwaysOn>
+    <updateRate>30.0</updateRate>
+    <cameraName>d415/color</cameraName>
+    <imageTopicName>image_raw</imageTopicName>
+    <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+    <frameName>d415_color_optical_frame</frameName>
+    <hackBaseline>0.0</hackBaseline>
+    <distortionK1>0.0</distortionK1>
+    <distortionK2>0.0</distortionK2>
+    <distortionK3>0.0</distortionK3>
+    <distortionT1>0.0</distortionT1>
+    <distortionT2>0.0</distortionT2>
+  </plugin>
+  </sensor>
+</gazebo>
+
+<!-- Depth camera -->
+<gazebo reference="d415_depth_frame">
+  <sensor type="depth" name="d415_depth">
+    <update_rate>30.0</update_rate>
+    <camera name="d415_depth">
+      <horizontal_fov>1.2043</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>10.0</far>
+      </clip>
+    </camera>
+    <plugin name="d415_depth_controller" filename="libgazebo_ros_openni_kinect.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30.0</updateRate>
+      <cameraName>d415</cameraName>
+      <imageTopicName>depth/image_raw</imageTopicName>
+      <cameraInfoTopicName>depth/camera_info</cameraInfoTopicName>
+      <depthImageTopicName>depth/image_raw</depthImageTopicName>
+      <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+      <pointCloudTopicName>depth/points</pointCloudTopicName>
+      <frameName>d415_depth_optical_frame</frameName>
+      <pointCloudCutoff>0.1</pointCloudCutoff>
+      <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+      <distortionK1>0.0</distortionK1>
+      <distortionK2>0.0</distortionK2>
+      <distortionK3>0.0</distortionK3>
+      <distortionT1>0.0</distortionT1>
+      <distortionT2>0.0</distortionT2>
+    </plugin>
+  </sensor>
+</gazebo>
+```
+
 ### Ejecución de rutina actual de movimiento
 
 Para realizar la ejecución de la simulación debe tener las siguientes dependencias instaladas, en un entorno (con entornos de python es suficiente, aunque si se cree necesario se puede crear un entorno usando conda):
