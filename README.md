@@ -84,3 +84,9 @@ puede usarse el comando el siguiente comando para lanzar cualquiera de los mundo
 ```
 
 el mundo cargado por defecto es ***world_table_bowl_with_apple***.
+
+Posteriormente, se debe de lanzar el nodo de rviz.
+
+```bash
+  roslaunch sim_kinova rviz_kinova_sim.launch
+```

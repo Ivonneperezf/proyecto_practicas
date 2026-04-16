@@ -5,7 +5,7 @@
   <arg name="db_path" default="$(find m1n6s300_moveit_config)/default_warehouse_mongo_db"/>
 
   <!-- RViz con MoveIt -->
-  <include file="$(find m1n6s300_moveit_config)/launch/moveit_rviz.launch">
+  <include file="$(find sim_kinova)/launch/moveit_rviz_simulation.launch">
     <arg name="config" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
