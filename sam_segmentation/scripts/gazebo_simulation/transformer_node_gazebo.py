@@ -8,24 +8,9 @@ class KinovaTransformer:
     def __init__(self):
         rospy.init_node('kinova_transformer')
         self.PARENT_FRAME = "m1n6s300_joint_5"
-        
-        # ============================================================
-        # [GAZEBO] El frame de la cámara cambia porque el plugin en el
-        # XACRO declara: <frameName>d415_color_optical_frame</frameName>
-        # En físico era "camera_color_optical_frame" del driver RealSense.
-        # ============================================================
-        self.CHILD_FRAME = "d415_color_optical_frame"  # CAMBIADO: antes camera_color_optical_frame
+        self.CHILD_FRAME = "d415_color_optical_frame" 
 
         self.ROBOT_BASE = "m1n6s300_link_base"
-
-        # ============================================================
-        # [GAZEBO] Se ELIMINA la llamada a publish_static_tf().
-        # En Gazebo, el joint fijo "m1n6s300_d415_mount_joint" del XACRO
-        # ya le dice a robot_state_publisher la posición exacta de la
-        # cámara respecto a link_5. Publicarla de nuevo desde el YAML
-        # causaría conflicto de TF (dos fuentes para el mismo frame).
-        # ============================================================
-        # self.publish_static_tf()  # ELIMINADO para Gazebo
 
         self.tf_buffer   = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
@@ -34,11 +19,6 @@ class KinovaTransformer:
         self.pub = rospy.Publisher( '/object_centroid_robot', PointStamped, queue_size=10)
         rospy.loginfo(f"Nodo Transformador Listo. Cámara montada en: {self.PARENT_FRAME}")
 
-    # ============================================================
-    # [GAZEBO] Función publish_static_tf() DESACTIVADA.
-    # Se conserva el código comentado por si se necesita volver
-    # al modo físico con el YAML de calibración.
-    # ============================================================
     # def publish_static_tf(self):
     #     try:
     #         prefix = "/camera_to_robot"
