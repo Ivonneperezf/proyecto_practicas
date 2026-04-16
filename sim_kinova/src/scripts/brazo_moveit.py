@@ -12,7 +12,7 @@ import geometry_msgs.msg
 
 from math import pi, fabs, cos, sqrt
 
-# Función para calcular distancia
+# Funcion para calcular distancia
 def dist(p, q):
     return sqrt(sum((p_i - q_i) ** 2.0 for p_i, q_i in zip(p, q)))
 
@@ -45,14 +45,14 @@ class MoveGroupPythonInterfaceTutorial(object):
     def __init__(self):
         super(MoveGroupPythonInterfaceTutorial, self).__init__()
 
-        # 🔵 Inicializar ROS y MoveIt
+        # Inicializar ROS y MoveIt
         moveit_commander.roscpp_initialize(sys.argv)
         rospy.init_node("kinova_moveit_tutorial", anonymous=True)
 
-        # 🔵 Información del robot
+        # Información del robot
         self.robot = moveit_commander.RobotCommander()
 
-        # 🔵 Escena de planificación
+        # Escena de planificación
         self.scene = moveit_commander.PlanningSceneInterface()
 
         group_name = "arm"
@@ -80,7 +80,7 @@ class MoveGroupPythonInterfaceTutorial(object):
 
         self.box_name = ""
 
-    # 🟢 Movimiento por ángulos de articulación
+    # Movimiento por ángulos de articulación
     def go_to_joint_state(self):
 
         move_group = self.move_group
@@ -110,7 +110,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         current_joints = move_group.get_current_joint_values()
         return all_close(joint_goal, current_joints, 0.01)
 
-    # 🟢 Movimiento a una pose (XYZ + orientación)
+    # Movimiento a una pose (XYZ + orientación)
     def go_to_pose_goal(self):
         move_group = self.move_group
 
@@ -176,7 +176,7 @@ class MoveGroupPythonInterfaceTutorial(object):
 
         return plan, fraction
 
-    # 🟢 Mostrar trayectoria en RViz
+    # Mostrar trayectoria en RViz
     def display_trajectory(self, plan):
 
         display_trajectory = moveit_msgs.msg.DisplayTrajectory()
@@ -186,17 +186,16 @@ class MoveGroupPythonInterfaceTutorial(object):
 
         self.display_trajectory_publisher.publish(display_trajectory)
 
-    # 🟢 Ejecutar trayectoria
+    # Ejecutar trayectoria
     def execute_plan(self, plan):
 
         self.move_group.execute(plan, wait=True)
 
-    # 🟢 Agregar objeto (caja)
+    # Agregar objeto
     def add_box(self, timeout=4):
 
         box_pose = geometry_msgs.msg.PoseStamped()
 
-        # 🔴 CAMBIO: frame del efector de Kinova
         box_pose.header.frame_id = self.eef_link
 
         box_pose.pose.orientation.w = 1.0
@@ -209,7 +208,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         rospy.sleep(1)
         return True
 
-    # 🟢 Adjuntar objeto al robot
+    # Adjuntar objeto al robot
     def attach_box(self):
 
         touch_links = self.robot.get_link_names(group="arm")
@@ -219,7 +218,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         rospy.sleep(1)
         return True
 
-    # 🟢 Separar objeto
+    # Separar objeto
     def detach_box(self):
 
         self.scene.remove_attached_object(self.eef_link, name=self.box_name)
@@ -227,7 +226,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         rospy.sleep(1)
         return True
 
-    # 🟢 Eliminar objeto
+    # Eliminar objeto
     def remove_box(self):
 
         self.scene.remove_world_object(self.box_name)
@@ -270,7 +269,7 @@ def main():
         # input("Eliminar caja...")
         # tutorial.remove_box()
 
-        print("✅ Demo completado")
+        print(" Demo completado")
 
     except rospy.ROSInterruptException:
         pass

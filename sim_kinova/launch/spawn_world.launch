@@ -1,3 +1,0 @@
-<include file="$(find gazebo_ros)/launch/empty_world.launch">
-  <arg name="world_name" value="$(find sim_kinova)/worlds/world_table_bowl.world"/>
-</include>

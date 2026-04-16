@@ -9,17 +9,14 @@ def mover_gripper():
 
     try:
         gripper_group = moveit_commander.MoveGroupCommander("gripper")
-        # --- EL TRUCO ESTÁ AQUÍ ---
-        # Aumentamos la tolerancia para que no aborte si falla por milímetros
         gripper_group.set_goal_joint_tolerance(0.05) 
-        gripper_group.set_planning_time(5.0) # Darle más tiempo para pensar
+        gripper_group.set_planning_time(5.0)
     except Exception as e:
         rospy.logerr(f"No se encontró el grupo: {e}")
         return
 
     rospy.loginfo("--- Iniciando secuencia ---")
 
-    # --- ABRIR ---
     rospy.loginfo("Abriendo dedos...")
     # Sincronizamos MoveIt con la posición real actual de Gazebo
     gripper_group.set_start_state_to_current_state()
