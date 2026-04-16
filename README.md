@@ -206,6 +206,8 @@ Para realizar la ejecución de la simulación debe tener las siguientes dependen
 * ultralytics: versión 8.4.23
 * open3d: versión 0.19.0
 
+Como parte de la preparación, debemos de agregar los modelos utilizados en Gazebo, son modelos obtenidos de [sketchfab](https://sketchfab.com/), estos deben clonarse del siguiente repositorio siguiendo los pasos que se indican en [modelos_de_gazebo](https://github.com/Ivonneperezf/modelos_de_gazebo).
+
 Para lanzar los nodos realizar la ejecución de con los siguientes comandos:
 
 Para lanzar el nodo con Gazebo
