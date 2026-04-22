@@ -45,8 +45,9 @@ class ArucoCenterDetector:
         self.parameters = cv2.aruco.DetectorParameters()
         self.detector   = cv2.aruco.ArucoDetector(self.aruco_dict, self.parameters)
 
-        self.marker_size = 0.045 
+        self.marker_size = 0.045  # metros
 
+        # --- CSV setup ---
         csv_filename = f"aruco_detections_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
         self.csv_path = os.path.join(self.path, csv_filename)
         self.csv_buffer = []
@@ -139,6 +140,7 @@ class ArucoCenterDetector:
                             z=float(center_base[2])
                         )
 
+                    # --- Visualizacion en imagen ---
                     cv2.aruco.drawDetectedMarkers(cv_image, [corner], ids[i:i+1])
                     cv2.drawFrameAxes(cv_image, self.camera_matrix, self.dist_coeffs,
                                       r, t, self.marker_size)

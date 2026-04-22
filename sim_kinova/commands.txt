@@ -1,0 +1,10 @@
+Para lanzar el brazo fisico usar el comando 
+roslaunch kinova_bringup kinova_robot.launch kinova_robotType:=m1n6s300
+
+Para lanzar los nodos de MoveIt!
+roslaunch m1n6s300_moveit_config m1n6s300_demo.launch
+
+Para lanzar la camara
+roslaunch realsense2_camera rs_camera.launch align_depth:=true filters:=pointcloud
+EN CASO DE QUE IMAGE_RAW DEJARA DE PUBLICAR, LANZAR CON 
+roslaunch realsense2_camera rs_camera.launch align_depth:=true filters:=pointcloud pointcloud_texture_stream:=RS2_STREAM_COLOR

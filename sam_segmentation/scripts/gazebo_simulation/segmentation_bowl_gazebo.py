@@ -13,7 +13,7 @@ import open3d as o3d
 class KinovaVisionD415:
     def __init__(self):
         rospy.init_node('vision_simulation')
-        self.pub = rospy.Publisher('object_centroid', PointStamped, queue_size=10)
+        self.pub = rospy.Publisher('/object_centroid', PointStamped, queue_size=10)
 
         self.TOPIC_RGB    = "/d415/color/image_raw"
         self.TOPIC_DEPTH  = "/d415/depth/image_raw"

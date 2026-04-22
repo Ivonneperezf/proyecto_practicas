@@ -149,8 +149,8 @@ def main():
         # input("*****************************\n\t\tPulsa ENTER para ir a POSE 1\n*****************************")
 
         # # ── Quaternion: asegúrate del orden x, y, z, w ──────────────────
-        # q = np.array([0.932, 0.181, -0.101, 0.298]) 
-        # q = q / np.linalg.norm(q) 
+        # q = np.array([0.932, 0.181, -0.101, 0.298])  # orden: x, y, z, w
+        # q = q / np.linalg.norm(q)                    # normalizar
 
         # pose_goal = geometry_msgs.msg.Pose(
         #     position=geometry_msgs.msg.Point(x=0.450, y=-0.140, z=0.305),
@@ -159,7 +159,8 @@ def main():
         #     )
         # )
         print("*****************************\n\t\tMovimiento a HOME completado\n*****************************")
-
+        # ok = move.go_to_pose_goal(pose_goal)          # ← llamada que faltaba
+        # print(f"POSE 1 {'OK' if ok else 'FALLIDO'}")
 
     except rospy.ROSInterruptException:
         print("La ejecucion ha sido interrumpida por ROS.")

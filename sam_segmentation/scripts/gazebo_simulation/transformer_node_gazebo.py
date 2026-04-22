@@ -15,7 +15,7 @@ class KinovaTransformer:
         self.tf_buffer   = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
-        self.sub = rospy.Subscriber('/object_centroid',       PointStamped, self.callback)
+        self.sub = rospy.Subscriber('/object_centroid', PointStamped, self.callback)
         self.pub = rospy.Publisher( '/object_centroid_robot', PointStamped, queue_size=10)
         rospy.loginfo(f"Nodo Transformador Listo. Cámara montada en: {self.PARENT_FRAME}")
 

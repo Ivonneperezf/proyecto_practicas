@@ -8,6 +8,14 @@ from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import PointStamped
 from ultralytics import YOLO, SAM
 
+# ==============================================================
+#   NUEVOS IMPORTS PARA NUBE DE PUNTOS Y KD-TREE
+# ==============================================================
+from sensor_msgs.msg import Image, CameraInfo, PointCloud2
+import sensor_msgs.point_cloud2 as pc2
+import open3d as o3d
+# ==============================================================
+
 class KinovaVisionD415:
     def __init__(self):
         rospy.init_node('vision_d415')
@@ -17,6 +25,12 @@ class KinovaVisionD415:
         self.TOPIC_RGB = "/camera/color/image_raw"
         self.TOPIC_DEPTH = "/camera/aligned_depth_to_color/image_raw"
         self.TOPIC_INFO = "/camera/color/camera_info"
+        # ==============================================================
+        #   NUEVO TÓPICO DE NUBE DE PUNTOS (ros1-legacy realsense-ros)
+        #   Requiere lanzar con: filters:=pointcloud
+        # ==============================================================
+        self.TOPIC_POINTS = "/camera/depth/color/points"
+        # ==============================================================
         #Carga de modelos optimizados para CPU/Laptop
         rospy.loginfo("Cargando modelos de YOLOv8 y MobileSAM")
         #Crear la instancia de RosPack
@@ -38,15 +52,67 @@ class KinovaVisionD415:
             rospy.logerr("No se detectó la cámara. Revisa que el driver esté corriendo.")
             return
         
+        # ==============================================================
+        #   NUEVA VARIABLE PARA ALMACENAR LA NUBE DE PUNTOS
+        # ==============================================================
+        self.last_cloud = None
+        # ==============================================================
+
         #Estado y Suscriptores
         self.last_depth = None # Variable para almacenar la última imagen de profundidad recibida, necesaria para sincronizar con el RGB
         rospy.Subscriber(self.TOPIC_DEPTH, Image, self.depth_cb) # Suscripción a la imagen de profundidad alineada con el color, sin cola para procesar cada frame de profundidad que llega
         rospy.Subscriber(self.TOPIC_RGB, Image, self.rgb_cb, queue_size=1, buff_size=2**24) # Suscripción a la imagen RGB con cola de tamaño 1 para no saturar la memoria si el procesamiento es lento
         #rospy.loginfo(">>> Sistema de Visión Listo.")
 
+        # ==============================================================
+        #   NUEVO SUBSCRIBER PARA LA NUBE DE PUNTOS
+        # ==============================================================
+        rospy.Subscriber(self.TOPIC_POINTS, PointCloud2, self.cloud_cb, queue_size=1)
+        # ==============================================================
+
     def depth_cb(self, msg):
         # Almacena el mapa de profundidad alineado
         self.last_depth = ros_numpy.numpify(msg) #Convertimos el mensaje ROS a un array de NumPy para procesarlo con OpenCV y sincronizarlo con el RGB
+
+    # ==============================================================
+    #   NUEVO CALLBACK PARA RECIBIR Y ALMACENAR LA NUBE DE PUNTOS
+    # ==============================================================
+    def cloud_cb(self, msg):
+        puntos = list(pc2.read_points(
+            msg,
+            field_names=("x", "y", "z"),
+            skip_nans=True   # descarta puntos sin retorno (NaN)
+        ))
+        if len(puntos) > 0:
+            self.last_cloud = np.array(puntos, dtype=np.float32)  # shape (N, 3)
+    # ==============================================================
+
+    # ==============================================================
+    #   NUEVA FUNCIÓN: PROFUNDIDAD CONFIABLE VÍA KD-TREE + NUBE 3D
+    #   Flujo:
+    #     1. Proyecta píxel (u,v) a punto 3D semilla usando z_seed
+    #     2. Construye KD-Tree con la nube completa
+    #     3. Busca K=10 vecinos más cercanos a la semilla
+    #     4. Promedia su Z → profundidad confiable y suavizada
+    # ==============================================================
+    def get_depth_from_cloud(self, u, v, z_seed, k=10):
+        if self.last_cloud is None:
+            return 0.0
+
+        x_seed = (u - self.cx) * z_seed / self.fx
+        y_seed = (v - self.cy) * z_seed / self.fy
+        seed   = np.array([[x_seed, y_seed, z_seed]])
+
+        nube = o3d.geometry.PointCloud()
+        nube.points = o3d.utility.Vector3dVector(self.last_cloud)
+        kd_tree = o3d.geometry.KDTreeFlann(nube)
+
+        _, idx, _ = kd_tree.search_knn_vector_3d(seed[0], k)
+
+        vecinos  = self.last_cloud[idx]           # shape (K, 3)
+        z_result = float(np.mean(vecinos[:, 2]))  # promedio del eje Z
+        return z_result
+    # ==============================================================
 
     def rgb_cb(self, msg):
         if self.last_depth is None:
@@ -123,19 +189,34 @@ class KinovaVisionD415:
                 u = int(M["m10"] / M["m00"]) # Coordenada X del centroide en píxeles
                 v = int(M["m01"] / M["m00"]) # Coordenada Y del centroide en píxeles
 
-                #Obtener Profundidad Z (en metros) de los puntos calculados como centroide de la máscara, aplicando un filtro para eliminar ceros y ruidos
-                z_m = self.get_filtered_depth(u, v)
+                # ==============================================================
+                #   MODIFICADO: get_filtered_depth ahora es solo SEMILLA para KD-Tree
+                #   La profundidad final z_m viene de get_depth_from_cloud
+                # ==============================================================
+                # z_m = self.get_filtered_depth(u, v)  # <-- antes era así (directo)
+                z_seed = self.get_filtered_depth(u, v)  # ahora solo semilla
+                # ==============================================================
+
                 """AJUSTAR"""
-                if 0.2 < z_m < 1.2: # Filtro de rango de operación 
+                if 0.2 < z_seed < 1.2: # Filtro de rango de operación 
                     #Al poner 0.2 < z_m, nos asegura de que el objeto esté en el rango donde la cámara realmente puede "ver" con precisión
+
+                    # ==============================================================
+                    #   NUEVO: Z FINAL VIENE DEL KD-TREE SOBRE LA NUBE DE PUNTOS
+                    #   Si la nube aún no llegó, usa z_seed como fallback
+                    # ==============================================================
+                    if self.last_cloud is not None:
+                        z_m = self.get_depth_from_cloud(u, v, z_seed, k=10)
+                    else:
+                        z_m = z_seed  # fallback si la nube aún no llegó
+                    # ==============================================================
+
                     # Proyectar a coordenadas 3D de la cámara
                     x_c = (u - self.cx) * z_m / self.fx #Colocamos la profundidad en metros para que la proyección a 3D sea correcta, ya que los intrínsecos están en píxeles y metros
                     y_c = (v - self.cy) * z_m / self.fy
                     
                     # --- LLAMADA A LA FUNCIÓN DE PUBLICACIÓN ---
-                    self.publish_msg(x_c, y_c, z_m)
-                    # --------------------------------------------
-                    
+                    self.publish_msg(x_c, y_c, z_m) 
                     # ================== Visualización ==================
                     # Dibujar contorno de la máscara de SAM
                     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
