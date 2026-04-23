@@ -263,3 +263,7 @@ Posteriormente, se debe de lanzar el nodo de rviz.
 ```bash
   roslaunch sim_kinova rviz_kinova_sim.launch
 ```
+
+### Paquete de calibración
+
+Los archivos en el paquete de calibración son necesarios ejecutar solo los scripts con `rosrun`, sin tomar en cuenta por el momento los archivos launch.
