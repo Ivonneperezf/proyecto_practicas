@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="use_sim" default="true"/>
 
     <!-- MoveIt: necesita saber el estado de las juntas del brazo -->
     <node pkg="moveit_ros_move_group"
           type="move_group"
           name="move_group">
-        <remap from="/joint_states" to="/m1n6s300/joint_states"/>
+        <!-- Verdadero para simulacion -->
+        <remap if="$(arg use_sim)" from="/joint_states" to="/m1n6s300/joint_states"/>
+        <!-- Falso para hardware real -->
+        <remap unless="$(arg use_sim)" from="/joint_states" to="/m1n6s300_driver/out/joint_state"/>
     </node>
 
     <!-- Nodo 3: Recibe /object_centroid_robot y mueve el brazo -->
@@ -13,7 +17,10 @@
           pkg="sam_segmentation"
           type="mover_brazo.py"
           output="screen">
-        <remap from="/joint_states" to="/m1n6s300/joint_states"/>
+        <!-- Verdadero para simulacion -->
+        <remap if="$(arg use_sim)" from="/joint_states" to="/m1n6s300/joint_states"/>
+        <!-- Falso para hardware real -->
+        <remap unless="$(arg use_sim)" from="/joint_states" to="/m1n6s300_driver/out/joint_state"/>
     </node>
 
 </launch>

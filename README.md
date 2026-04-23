@@ -212,6 +212,15 @@ Como cambio final, que **puede ser provisional**, es la limitación de las artic
 <xacro:property name="joint_3_upper_limit" value="${196/180*J_PI}" />
 ```
 
+### Configuraciones de la camara 
+El paquete de los drivers de la camara deben de ser integrados por medio del repositorio official del [wrapper realsense-ros](https://github.com/realsenseai/realsense-ros/tree/ros1-legacy) para ros 1.
+
+Para lanzar los nodos de la camara, se debe de ejecutar el siguiente comando, es necesario incluir ambos argumentos y es necesario destacar que durante su ejecución se visualizarán algunos errores, sin embargo, estos no determinan algún comportamiento crítico por lo que se puede continuar con normalidad.
+
+```bash
+roslaunch realsense2_camera rs_camera.launch filters:=pointcloud align_depth:=true
+```
+
 ### Ejecución de rutina actual de movimiento
 
 Para realizar la ejecución de la simulación debe tener las siguientes dependencias instaladas, en un entorno (con entornos de python es suficiente, aunque si se cree necesario se puede crear un entorno usando conda):
